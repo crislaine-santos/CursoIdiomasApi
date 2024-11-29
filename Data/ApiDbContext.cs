@@ -10,8 +10,8 @@ namespace CursoIdiomasApi.Data
         {
         }
         public DbSet<Aluno> Alunos { get; set; }
-        public DbSet<Turma> Turmas { get; set; }     
-        
+        public DbSet<Turma> Turmas { get; set; }
 
     }
 }
+

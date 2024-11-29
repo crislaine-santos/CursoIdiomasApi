@@ -13,7 +13,7 @@ namespace CursoIdiomasApi.Configuration
         {
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
               .AddRoles<IdentityRole>()
-              .AddEntityFrameworkStores<ApiDbContext>();
+              .AddEntityFrameworkStores<ApiDbContext>(); 
 
             var JwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
             builder.Services.Configure<JwtSettings>(JwtSettingsSection);

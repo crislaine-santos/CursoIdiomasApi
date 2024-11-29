@@ -64,13 +64,20 @@ namespace CursoIdiomasApi.Controllers
               return Problem("Erro ao criar um aluno, Contate o suporte!");
             }
 
-             if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            
+            var turma = await _context.Turmas.FindAsync(alunoDto.TurmaId);
+            if (turma == null)
+            {
+                return BadRequest("A turma especificada não existe.");
+            }           
+           
             var aluno = new Aluno
             {
                 Nome = alunoDto.Nome,
                 Cpf = alunoDto.Cpf,
-                Email = alunoDto.Email
+                Email = alunoDto.Email,
+                TurmaId = alunoDto.TurmaId
             };
 
             _context.Alunos.Add(aluno);

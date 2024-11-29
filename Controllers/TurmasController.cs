@@ -42,8 +42,10 @@ namespace CursoIdiomasApi.Controllers
             {
                 return NotFound();
             }
-
-            var turma = await _context.Turmas.FindAsync(id);
+           
+            var turma = await _context.Turmas
+                         .Include(t => t.Alunos) 
+                         .FirstOrDefaultAsync(t => t.Id == id);
 
             if (turma == null)
             {
@@ -57,14 +59,20 @@ namespace CursoIdiomasApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Turma>> PostAluno(Turma turma)
+        public async Task<ActionResult<Turma>> PostAluno(TurmaDto turmaDto)
         {
             if (_context.Turmas == null)
             {
                 return Problem("Erro ao criar uma Turma, Contate o suporte!");
             }
 
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);                              
+
+            
+            var turma = new Turma
+            {               
+                Nivel = turmaDto.Nivel               
+            };
 
             _context.Turmas.Add(turma);
             await _context.SaveChangesAsync();
